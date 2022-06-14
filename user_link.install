@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for user_link.
+ */
+use Drupal\user_link\AuthToken;
+use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Config\FileStorage;
+
+
+/**
+ * Implement hook_install
+ */
+function user_link_install() {
+
+    // https://www.drupal.org/docs/drupal-apis/configuration-api/simple-configuration-api
+    // check if the field config has already been imported..?
+    $config_files = [
+       'field.storage.user.field_auth_token2',
+        'field.field.user.user.field_auth_token2',
+//        'core.entity_view_display.user.user.default',
+//        'core.entity_view_display.user.user.compact',
+//        'core.entity_form_display.user.user.default'
+      ];
+    $configPath = drupal_get_path('module', 'user_link') . '/config/hook_install/';
+    $source = new FileStorage($configPath);
+    
+    foreach ($config_files as $config_id) {
+        $config = \Drupal::config($config_id);
+            
+        $raw_data = $source->read($config_id);
+        var_dump($raw_data);
+        
+        \Drupal::configFactory()->getEditable($config_id)
+          ->setData(Yaml::decode($raw_data))
+          ->save();
+    }
+
+    // Check if user accounts already exist    
+    // Create tokens for each User account
+    $tokenHandler = new AuthToken();
+    $tokenHandler->assignToken();
+}
+
+ function user_link_uninstall($is_syncing){
+     /**
+      * remove the added custom field from the user profile
+      * disable : in production
+      */
+     $config_files = [
+        'field.field.user.user.field_auth_token2',
+         'field.storage.user.field_auth_token2',
+         'core.entity_form_display.user.user.default',
+         'core.entity_view_display.user.user.compact',
+         'core.entity_view_display.user.user.default'
+      ];
+     foreach ($config_files as $config_id) {
+        \Drupal::service('config.factory')->getEditable($config_id)->delete();
+     }
+ }

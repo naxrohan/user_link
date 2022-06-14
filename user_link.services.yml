@@ -1,0 +1,5 @@
+services:
+  user_link.auth_token_login:
+    class: Drupal\user_link\AuthTokenLogin
+    tags:
+      - { name: http_middleware, priority: 150 }
