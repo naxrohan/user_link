@@ -3,6 +3,3 @@ type: module
 description: 'User Link generate presigned login tokens for Users'
 package: Custom
 core_version_requirement: ^9.3
-# These modules are required by the tests, must be available at bootstrap time
-dependencies:
-  - drupal:options
