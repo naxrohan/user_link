@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-//$autoloader = require_once '/component/autoload.php'; 
-//$kernel = new DrupalKernel('prod', $autoloader);
 /**
  * Description of AuthTokenLogin
  *
