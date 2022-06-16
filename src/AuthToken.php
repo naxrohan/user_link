@@ -88,10 +88,25 @@ class AuthToken {
             ->execute();
     
         if(count($ids) > 0){
-            return array_pop($ids);
+            $uid = array_pop($ids);
+            $account = User::load($uid);
+            return $account;
         }
         return null;
     }
+    
+    public function lookUpToken2($_token) {
+        $userStorage = \Drupal::service('entity_type.manager')->getStorage('user');
+        $users = $userStorage->loadByProperties([
+            'field_auth_token' => $_token,
+            'status' => 1,
+        ]);
+        if(!empty($users)){
+            return reset($users);
+        }
+        return null;
+    }
+
 }
 
 // $tokenHandler = new AuthToken();
