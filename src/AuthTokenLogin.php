@@ -3,7 +3,6 @@ namespace Drupal\user_link;
 
 use Drupal;
 use Drupal\Core\Url;
-use Drupal\user\Entity\User;
 use Drupal\user_link\AuthToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,27 +60,23 @@ class AuthTokenLogin implements HttpKernelInterface {
 
                 //todo: lookup & validate
                 $auth = new AuthToken();
+                
                 $userFound = $auth->lookUpToken($auth_token);
-                if(isset($userFound)){
-                    Drupal::moduleHandler()->loadInclude('user', 'module');
-                    //fixme: do login for the user account & redirect to the home page..?
-                    $account = User::load($userFound);
-                    user_login_finalize($account);
-                    sleep(5);
+                //$userFound = $auth->lookUpToken2($auth_token);
+                
+                if(!empty($userFound)){
                     
-                    $gotUrl = Url::fromRoute('entity.user.canonical', ['user' => $account->id()]);
+                    Drupal::moduleHandler()->loadInclude('user', 'module');    
+                    
+                    user_login_finalize($userFound);
+                    
+                    $gotUrl = Url::fromRoute('entity.user.canonical', ['user' => $userFound->id()]);
                     $response = new RedirectResponse($gotUrl->toString());
                     
-    //                if($request->hasSession()){
-    //                    Drupal::logger('user_link')->notice("session established...");
-    //                } else {
-    //                    Drupal::logger('user_link')->notice("session NOT established...");
-    //                }
                 }
             }
         }
         return $response;
-        //$response->send();
     }
 
 }
