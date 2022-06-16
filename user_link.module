@@ -22,7 +22,7 @@ use \Drupal\user_link\Event\UserLoginEvent;
 function user_link_user_login(Drupal\user\UserInterface $account){
     
     $event = new UserLoginEvent($account, $account->id());
-    var_dump('-->hook');
+    
     $event_dispatcher = \Drupal::service('event_dispatcher');
     $event_dispatcher->dispatch($event, UserLoginEvent::USER_LOGIN);
     
@@ -32,7 +32,9 @@ function user_link_user_login(Drupal\user\UserInterface $account){
 function user_link_user_insert(\Drupal\Core\Entity\EntityInterface $account){
     
     $event = new UserLoginEvent($account, $account->id());
-    var_dump('-->hook');
+    
     $event_dispatcher = \Drupal::service('event_dispatcher');
     $event_dispatcher->dispatch($event, UserLoginEvent::REGISTRATION_DONE);
 }
+
+//alternatively we could have user hook entity presave to add the token value..instead of the form alter OR the Event 
