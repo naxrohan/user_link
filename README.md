@@ -1,11 +1,3 @@
-INTRODUCTION
-This test is designed to estimate a candidate's ability to learn and implement Drupal 8 APIs. 
-A candidate will be asked for an explanation of written code and should demonstrate a strong understanding of concepts and techniques used during implementing a technical test.
-
-API USED
-During this task a candidate should understand and implement techniques:
-●	“Middleware API”
-●	“Configuration API”.
 
 
 TECHNICAL DESCRIPTION
@@ -16,7 +8,5 @@ TECHNICAL DESCRIPTION
 ●	done--The task should be implemented as a drupal module deployed to a GitHub account.
 ●	done--Once installed, the module should create the described field for the user, tokens should be generated for all the existing users.
 ●	done--The module should be compatible with Drupal core version ^9.3.
-RESTRICTIONS
-The task should be executed within 7 days after receiving it.
 
 
