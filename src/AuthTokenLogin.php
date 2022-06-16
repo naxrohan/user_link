@@ -1,11 +1,16 @@
 <?php
 namespace Drupal\user_link;
 
+use Drupal;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\user_link\AuthToken;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+//$autoloader = require_once '/component/autoload.php'; 
+//$kernel = new DrupalKernel('prod', $autoloader);
 /**
  * Description of AuthTokenLogin
  *
@@ -46,23 +51,37 @@ class AuthTokenLogin implements HttpKernelInterface {
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true) {
         $urlStr = $request->getUri();
         $url_parts = parse_url($urlStr);
-        parse_str($url_parts['query'], $query);
-        if(isset($query[$this->argument_name])){
-            $auth_token = $query[$this->argument_name];
+        $response = $this->httpKernel->handle($request, $type, $catch);
 
-            //todo: lookup & validate
-            $auth = new AuthToken();
-            $userFound = $auth->lookUpToken($auth_token);
-            if(isset($userFound)){
-                //fixme: do login for the user account & redirect to the home page..?
-                $account = User::load($userFound);
-//                user_login_finalize($account);
-//                dump($account);
-//                return RedirectResponse::create(Url::fromUri('<front>'),302);
+        if(isset($url_parts['query'])){
+            parse_str($url_parts['query'], $query);
+            
+            if(isset($query[$this->argument_name])){
+                $auth_token = $query[$this->argument_name];
+
+                //todo: lookup & validate
+                $auth = new AuthToken();
+                $userFound = $auth->lookUpToken($auth_token);
+                if(isset($userFound)){
+                    Drupal::moduleHandler()->loadInclude('user', 'module');
+                    //fixme: do login for the user account & redirect to the home page..?
+                    $account = User::load($userFound);
+                    user_login_finalize($account);
+                    sleep(5);
+                    
+                    $gotUrl = Url::fromRoute('entity.user.canonical', ['user' => $account->id()]);
+                    $response = new RedirectResponse($gotUrl->toString());
+                    
+    //                if($request->hasSession()){
+    //                    Drupal::logger('user_link')->notice("session established...");
+    //                } else {
+    //                    Drupal::logger('user_link')->notice("session NOT established...");
+    //                }
+                }
             }
-
         }
-         return $this->httpKernel->handle($request, $type, $catch);
+        return $response;
+        //$response->send();
     }
 
 }
