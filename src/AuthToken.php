@@ -51,7 +51,7 @@ class AuthToken {
             ->execute();
 
         $users = User::loadMultiple($ids);
-        print("\n Total Users::". count($users));
+        Drupal::messenger()->addMessage("Token updated for --> Total Users::".count($users));
 
         foreach ($users as $user){
             $uid = $user->id();
