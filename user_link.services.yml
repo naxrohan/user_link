@@ -3,3 +3,8 @@ services:
     class: Drupal\user_link\AuthTokenLogin
     tags:
       - { name: http_middleware, priority: 150 }
+  user_link.user_create_subscriber:
+    class: Drupal\user_link\EventSubscriber\UserCreateTokenSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: 'event_subscriber' }

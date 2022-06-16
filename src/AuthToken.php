@@ -59,16 +59,19 @@ class AuthToken {
             if (!in_array($uid, array(0, 1))) {
                 //todo: check if the token already exists
                 // var_dump($account->getAuthToken());
-                $account = User::load($uid);
-
-                // updated the auth token fields for the user
-                $randToken = $this->getNewToken();
-                $account->set($this->field_name, $randToken);
-                print("\n Token Updated..");
-                $account->save();
+                
+                $this->setTokeForUser($uid);
             }
         }
+    }
+    
+    public function setTokeForUser(int $user_id) {
+        $account = User::load($user_id);
 
+        // updated the auth token fields for the user
+        $randToken = $this->getNewToken();
+        $account->set($this->field_name, $randToken);
+        $account->save();
     }
 
     /**

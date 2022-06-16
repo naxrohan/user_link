@@ -9,11 +9,13 @@ During this task a candidate should understand and implement techniques:
 
 
 TECHNICAL DESCRIPTION
-●	Each user should have a new field called “AUTH TOKEN”. The field should contain a 32-digits random token, which should be generated upon user creation.
-●	On site load, the candidate’s code should look at the specific parameter in URL “authtoken” (www.example.com?authtoken=”[TOKEN HERE]”) and if a token exists, the user, that has such a token, should be authenticated.
-●	The task should be implemented as a drupal module deployed to a GitHub account.
-●	Once installed, the module should create the described field for the user, tokens should be generated for all the existing users.
-●	The module should be compatible with Drupal core version ^9.3.
+●	done--Each user should have a new field called “AUTH TOKEN”. The field should contain a 32-digits random token, 
+        which should be generated upon user creation.
+●	done--On site load, the candidate’s code should look at the specific parameter in URL “authtoken” (www.example.com?authtoken=”[TOKEN HERE]”) 
+        and if a token exists, the user, that has such a token, should be authenticated.
+●	done--The task should be implemented as a drupal module deployed to a GitHub account.
+●	done--Once installed, the module should create the described field for the user, tokens should be generated for all the existing users.
+●	done--The module should be compatible with Drupal core version ^9.3.
 RESTRICTIONS
 The task should be executed within 7 days after receiving it.
 

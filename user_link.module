@@ -1,0 +1,38 @@
+<?php
+
+use \Drupal\user_link\Event\UserLoginEvent;
+
+/**
+ * Implement hook_form_FORMID_alter()
+ */
+//function user_link_form_user_register_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+//    $form['field_auth_token']['#disabled'] = True;    
+
+//    $form_state['#storage']['form_display']->fieldDefinitions['field_auth_token']->default_value = '123';
+//    dump( );
+//    $form['field_auth_token']['widget'][0]['target_id']['#default_value'] = t('get_random_value');
+//    $form['field_auth_token'][0]['value'] = t('get_random_value');
+    
+//}
+
+/**
+ * Implement hook_user_login()
+ */
+function user_link_user_login(Drupal\user\UserInterface $account){
+    
+    $event = new UserLoginEvent($account, $account->id());
+    var_dump('-->hook');
+    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher->dispatch($event, UserLoginEvent::USER_LOGIN);
+    
+}
+
+
+function user_link_user_insert(\Drupal\Core\Entity\EntityInterface $account){
+    
+    $event = new UserLoginEvent($account, $account->id());
+    var_dump('-->hook');
+    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher->dispatch($event, UserLoginEvent::REGISTRATION_DONE);
+}
